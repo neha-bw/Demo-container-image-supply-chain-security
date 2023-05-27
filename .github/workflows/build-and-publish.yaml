@@ -12,7 +12,7 @@ jobs:
 
       - name: "build and push the image"
         run: |
-          IMAGE="ghcr.io/luhring/example:git-$GITHUB_SHA"
+          IMAGE="ghcr.io/neha-bw/example:git-$GITHUB_SHA"
 
           docker build -t "$IMAGE" .
 
@@ -30,10 +30,10 @@ jobs:
         env:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u luhring --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u neha-bw --password-stdin
           echo "${{ secrets.COSIGN_KEY }}" > cosign.key
 
-          IMAGE="ghcr.io/luhring/example:git-$GITHUB_SHA"
+          IMAGE="ghcr.io/neha-bw/example:git-$GITHUB_SHA"
 
           # Sign the image (...and this step pushes the signature to the registry, too)
           cosign sign -key ./cosign.key "$IMAGE"
@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: "create the SBOM"
         run: |
-          IMAGE="ghcr.io/luhring/example:git-$GITHUB_SHA"
+          IMAGE="ghcr.io/neha-bw/example:git-$GITHUB_SHA"
 
           # We're using `jq` only to minimize the size of the SBOM payload. In the future, Syft might produce compacted JSON data by default.
 
@@ -93,7 +93,7 @@ jobs:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
           SBOM_FILE: ./sbom.syft.json
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u luhring --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u neha-bw --password-stdin
           echo "${{ secrets.COSIGN_KEY }}" > cosign.key
 
           IMAGE="ghcr.io/luhring/example:git-$GITHUB_SHA"
@@ -116,10 +116,10 @@ jobs:
           COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
           VULNERABILITY_SCAN_FILE: ./vulnerability-report.grype.json
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u luhring --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u neha-bw --password-stdin
           echo "${{ secrets.COSIGN_KEY }}" > cosign.key
 
-          IMAGE="ghcr.io/luhring/example:git-$GITHUB_SHA"
+          IMAGE="ghcr.io/neha-bw/example:git-$GITHUB_SHA"
 
           # Put the vulnerability scan report into a signed "attestation" about the image, and push this attestation to the registry.
           cosign attest -predicate "$VULNERABILITY_SCAN_FILE" -key ./cosign.key "$IMAGE"
