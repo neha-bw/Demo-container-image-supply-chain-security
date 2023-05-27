@@ -18,7 +18,7 @@ jobs:
 
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u luhring --password-stdin
           # docker push "$IMAGE"
-           docker push ghcr.io/luhring/example-ci:latest
+         #  docker push ghcr.io/luhring/example-ci:latest
 
   sign_image:
     needs: build_image
